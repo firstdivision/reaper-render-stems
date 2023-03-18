@@ -1,8 +1,22 @@
 # Search for Reaper projects and Render them as new projects with only stems
 
+# Disclaimer
+**Work in Progress** -- You probably do not want to run this against your entire project folder.  Certainly not without making a backup first.
+
 # Requirements
-- Windows
+- Windows (tested on Windows 10)
 - Reaper
+- Powershell (comes with Windows)
+
+# Usage
+- Clone this repo locally (i.e. `git clone https://github.com/firstdivision/reaper-render-stems.git`)
+- Edit `config.ps1` to set (all have default values):
+  - Location of Reaper.exe
+  - The folder to search in for Reaper project files
+  - The render pattern for the individual output files
+  - The output folder for where to place the rendered projects
+  - The suffix to add to found Reaper project files which becomes the project file that gets rendered
+- Run the script from the command line with `./render.ps1`
 
 # Notes:
 ## Links:

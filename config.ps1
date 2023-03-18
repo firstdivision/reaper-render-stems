@@ -4,7 +4,9 @@
 Set-Variable -Name REAPER_EXE_PATH -Value "C:\Program Files\REAPER (x64)\reaper.exe" -Option Constant, AllScope -Force
 
 #  The folder to search recursively for Reaper Project files
-Set-Variable -Name SEARCH_FOLDER -Value "./" -Option Constant, AllScope -Force
+#  Where to search in for reaper files.  Can be relative like `.\` or a fully-qualified path
+# like `c:\projects\reaper\my-songs
+Set-Variable -Name SEARCH_FOLDER -Value ".\" -Option Constant, AllScope -Force
 
 # Render pattern for the files.  You can use Reaper wildcards here:
 Set-Variable -Name RENDER_PATTERN -Value "`"`$tracknumber-`$trackname`"" -Option Constant, AllScope -Force
