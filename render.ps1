@@ -1,3 +1,30 @@
+
+#### Configure
+
+$ReaperEXE = "C:\Program Files\REAPER (x64)\reaper.exe"
+$OutputFolder = "c:\temp\reaper_project\output"
+
+#### End Configure
+
+$OutputFolderResolved = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputFolder)
+
+
+function Update-InProjectFile {
+
+    param (
+        $ProjectFilePath,
+        $SearchForPropertyName,
+        $ReplaceWith
+    )
+
+    $line = Get-Content $ProjectFilePath | Select-String $SearchForPropertyName | Select-Object -ExpandProperty Line
+    Write-Host "Found on line: " + $line
+    $content = Get-Content $ProjectFilePath
+    $content | ForEach-Object {$_ -replace $line, $ReplaceWith} | Set-Content $ProjectFilePath
+
+}
+
+
 $input_file=".\Reaper_Projects\CleanProjectInput\Test-Project-1\Test-Project-1.rpp"
 Write-Host $input_file
 
@@ -19,20 +46,14 @@ Write-Host $output_file_path
 Copy-Item $input_file $output_file_path
 
 
-
 #do replacements to override some render properties
-(Get-Content $output_file_path).replace('RENDER_STEMS 0', 'RENDER_STEMS 1') | Set-Content $output_file_path
+Update-InProjectFile $output_file_path 'RENDER_FILE' "  RENDER_FILE $OutputFolderResolved"
+Update-InProjectFile $output_file_path 'RENDER_PATTERN' "  RENDER_PATTERN `"`$tracknumber-`$trackname`""
+Update-InProjectFile $output_file_path 'RENDER_FMT' "  RENDER_FMT 0 2 44100"
+Update-InProjectFile $output_file_path 'RENDER_RANGE' "  RENDER_RANGE 1 0 0 18 1000"
+Update-InProjectFile $output_file_path 'RENDER_STEMS' "  RENDER_STEMS 1"
 
-$line = Get-Content $output_file_path | Select-String 'RENDER_PATTERN' | Select-Object -ExpandProperty Line
-Write-Host "Found on line: " + $line
-$content = Get-Content $output_file_path
-$content | ForEach-Object {$_ -replace $line,"  RENDER_PATTERN `"`$tracknumber-`$trackname`""} | Set-Content $output_file_path
+$nosplashFlag =  '-nosplash'
+$renderprojectFlag = '-renderproject'
 
-
-#exit
-
-$Command = "C:\Program Files\REAPER (x64)\reaper.exe"
-$nosplash =  '-nosplash'
-$renderproject = '-renderproject'
-
-& $Command $nosplash $renderproject $output_file_path
+& $ReaperEXE $nosplashFlag $renderprojectFlag $output_file_path
