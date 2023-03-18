@@ -37,7 +37,7 @@ $input_file_name = (Get-Item $input_file).Basename
 # Build a new project file name with the directory and new project file name
 $output_file_name = $input_file_name + "_render_stems" + ".rpp"
 
-# Build a complete payj to the new file
+# Build a complete path to the new file
 $output_file_path = Join-Path -Path $input_file_path -ChildPath $output_file_name
 
 Write-Host $output_file_path
