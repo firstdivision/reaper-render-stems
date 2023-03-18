@@ -7,7 +7,7 @@
 $OutputFolderResolved = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputFolder)
 
 
-# TODO: Loop and search an input folder for all Reaper project files
+# Loop and search an input folder for all Reaper project files
 $input_files = Find-ReaperProjectFiles "./"
 foreach ($input_file in $input_files)
 {
