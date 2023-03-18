@@ -18,8 +18,18 @@ Write-Host $output_file_path
 # Copy the real project file to our new "_render_stems" project file
 Copy-Item $input_file $output_file_path
 
+
+
 #do replacements to override some render properties
 (Get-Content $output_file_path).replace('RENDER_STEMS 0', 'RENDER_STEMS 1') | Set-Content $output_file_path
+
+$line = Get-Content $output_file_path | Select-String 'RENDER_PATTERN' | Select-Object -ExpandProperty Line
+Write-Host "Found on line: " + $line
+$content = Get-Content $output_file_path
+$content | ForEach-Object {$_ -replace $line,"  RENDER_PATTERN `"`$tracknumber-`$trackname`""} | Set-Content $output_file_path
+
+
+#exit
 
 $Command = "C:\Program Files\REAPER (x64)\reaper.exe"
 $nosplash =  '-nosplash'
