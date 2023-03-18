@@ -1,14 +1,28 @@
 
 #### Configure
 
+# Where is your reaper.exe?
 $ReaperEXE = "C:\Program Files\REAPER (x64)\reaper.exe"
+
+#  The folder to search recursively for Reaper Project files
+#$SearchFolder = ""
+
+# This is where your rendered files will appear.  
+# It is what goes into the File > Render > Output > Directory textbox in Reaper's Render dialog
+# If the path does not exist it will be created.
+# You can also use relative paths like:
+#
+#   $OutputFolder = ".\directory\under\this\script"
+#
 $OutputFolder = "c:\temp\reaper_project\output"
 
 #### End Configure
 
+# Get the full path to the output folder, even if it does not exist.
 $OutputFolderResolved = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputFolder)
 
 
+# Updates the given Reaper project's file's property with the given one.
 function Update-InProjectFile {
 
     param (
@@ -24,9 +38,8 @@ function Update-InProjectFile {
 
 }
 
-
+# TODO: Loop and search an input folder for all Reaper project files
 $input_file=".\Reaper_Projects\CleanProjectInput\Test-Project-1\Test-Project-1.rpp"
-Write-Host $input_file
 
 #Get just the path where the project file is located
 $input_file_path = Split-Path -Path $input_file
@@ -38,13 +51,11 @@ $input_file_name = (Get-Item $input_file).Basename
 $output_file_name = $input_file_name + "_render_stems" + ".rpp"
 
 # Build a complete path to the new file
+# This will be sent into reaper.exe as the project to render
 $output_file_path = Join-Path -Path $input_file_path -ChildPath $output_file_name
-
-Write-Host $output_file_path
 
 # Copy the real project file to our new "_render_stems" project file
 Copy-Item $input_file $output_file_path
-
 
 #do replacements to override some render properties
 Update-InProjectFile $output_file_path 'RENDER_FILE' "  RENDER_FILE $OutputFolderResolved"
