@@ -17,3 +17,14 @@ $RenderPattern = "`"`$tracknumber-`$trackname`""
 #   $OutputFolder = ".\directory\under\this\script"
 #
 $OutputFolder = "c:\temp\reaper_project\output"
+
+
+# The suffix to attach to the end of the project file copy that 
+# this script makes.  E.g.:
+#
+#  $RenderStemsProjectFileSuffix = "_render_stems_file"
+#  
+#  Your project file: my_project.rpp
+#
+#  Becomes: my_project_render_stems_file.rpp
+$RenderStemsProjectFileSuffix = "_render_stems_file"

@@ -13,7 +13,7 @@ function Get-RenderStemsProjectFilePath {
     $input_file_name = (Get-Item $input_file).Basename
 
     # Build a new project file name with the directory and new project file name
-    $output_file_name = $input_file_name + "_render_stems" + ".rpp"
+    $output_file_name = $input_file_name + $RenderStemsProjectFileSuffix + ".rpp"
 
     # Build a complete path to the new file
     # This will be sent into reaper.exe as the project to render
@@ -32,8 +32,22 @@ function Update-InProjectFile {
     )
 
     $line = Get-Content $ProjectFilePath | Select-String $SearchForPropertyName | Select-Object -ExpandProperty Line
-    Write-Host "Found on line: " + $line
+    Write-Host "Replaced property : " + $line
     $content = Get-Content $ProjectFilePath
     $content | ForEach-Object {$_ -replace $line, "$SearchForPropertyName $ReplaceWith"} | Set-Content $ProjectFilePath
 
+}
+
+
+function Find-ReaperProjectFiles{
+    param (
+        $input_directory
+    )
+
+    return Get-ChildItem $input_directory -Filter '*.rpp' -Recurse | `
+        Where-Object { `
+            $_.Name.substring($_.Name.length -3, 3) -Match 'rpp' -and ` #ONLY .rpp and not .rpp-back
+            ($_.Name -notmatch $RenderStemsProjectFileSuffix) ` # but not our copies of rpp files that we make
+        } | `
+        ForEach-Object {$_.FullName}
 }
