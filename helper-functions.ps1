@@ -10,10 +10,10 @@ function Get-RenderStemsProjectFilePath {
     $input_file_path = Split-Path -Path $input_file
 
     # Get just the base filename of that path.  i.e. "project.rpp" gets just "project"
-    $input_file_name = (Get-Item $input_file).Basename
+    $input_file_basename = (Get-Item $input_file).Basename
 
     # Build a new project file name with the directory and new project file name
-    $output_file_name = $input_file_name + $RenderStemsProjectFileSuffix + ".rpp"
+    $output_file_name = $input_file_basename + $RENDER_STEMS_PROJECT_FILE_SUFFIX + ".rpp"
 
     # Build a complete path to the new file
     # This will be sent into reaper.exe as the project to render
@@ -47,7 +47,7 @@ function Find-ReaperProjectFiles{
     return Get-ChildItem $input_directory -Filter '*.rpp' -Recurse | `
         Where-Object { `
             $_.Name.substring($_.Name.length -3, 3) -Match 'rpp' -and ` #ONLY .rpp and not .rpp-back
-            ($_.Name -notmatch $RenderStemsProjectFileSuffix) ` # but not our copies of rpp files that we make
+            ($_.Name -notmatch $RENDER_STEMS_PROJECT_FILE_SUFFIX) ` # but not our copies of rpp files that we make
         } | `
         ForEach-Object {$_.FullName}
 }
