@@ -1,16 +1,10 @@
 # Search for Reaper projects and Render them as new projects with only stems
 
-
 # Requirements
 - Windows
-- Reaper installed
-
+- Reaper
 
 # Notes:
-
-## Reaper Command Line
-
-
 ## Links:
 - https://github.com/ReaTeam/Doc/blob/master/REAPER-CLI.md
 - https://www.reddit.com/r/Reaper/comments/mbf3n3/script_to_batchrender_every_project_in_a_folder/
@@ -41,7 +35,7 @@ I think I see how to do most of it from your script which would be something lik
 ## Project File Replacements:
 
 ```
-  RENDER_FILE C:\Users\Andrew\Downloads\ReaperRenders
+  RENDER_FILE C:\Path\to\export\folder
   RENDER_PATTERN $tracknumber-$trackname
   RENDER_FMT 0 2 44100
   
